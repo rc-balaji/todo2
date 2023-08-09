@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Head section same as before -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,7 +38,7 @@
         .completed-button{
             text-decoration: none;
         }
-        .top-btn,.completed-button{
+        .top-btn,.completed-button,.complete-button{
             padding: 5px 10px;
             background-color: #ff5b57;
             color: #fff;
@@ -76,9 +75,9 @@
         
         
         .create-todo input[type="text"],
-.create-todo input[type="datetime-local"] {
-    background-color: #45f3ff;
-}
+        .create-todo input[type="datetime-local"] {
+            background-color: #45f3ff;
+        }
     </style>
 </head>
 <body>
@@ -169,31 +168,33 @@ function DisplayTodos()
     $todos = readTodos();
     $todoList = '';
     $counter = 1;
-
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $content = $_POST['content'];
-        $createdAt = $_POST['createdAt'];
-        
-        // Check if content is not empty before adding the task
-        if (!empty($content) && !empty($createdAt)) {
-            $todo = [
-                'content' => $content,
-                'done' => false,
-                'createdAt' => $createdAt
-            ];
-            $todos[] = $todo;
-            writeTodos($todos);
+        if (isset($_POST['content']) && isset($_POST['createdAt'])) {
+            $content = $_POST['content'];
+            $createdAt = $_POST['createdAt'];
+    
+            // Check if content is not empty before adding the task
+            if (!empty($content) && !empty($createdAt)) {
+                $todo = [
+                    'content' => $content,
+                    'done' => false,
+                    'createdAt' => $createdAt
+                ];
+                $todos[] = $todo;
+                writeTodos($todos);
+            }
+    
+            header("Location: index.php");
+            exit();
         }
-
-        header("Location: index.php");
-        exit();
     }
-
+    
     if (isset($_GET['complete'])) {
         $index = $_GET['complete'];
         if (isset($todos[$index])) {
             $completed = readCompleted();
             $completedTodo = $todos[$index];
+            date_default_timezone_set('Asia/Kolkata');
             $completedTodo['completedAt'] = date('Y-m-d H:i:s');
             $completed[] = $completedTodo;
             unset($todos[$index]);
@@ -225,6 +226,33 @@ function DisplayTodos()
     return $todoList;
 }
 ?>
+<script>
+ // Track alerts shown
+ const alertsShown = {};
 
+setInterval(checkDeadlines, 1000);
+
+function checkDeadlines() {
+
+  const now = new Date();
+
+  const todos = <?php echo json_encode(readTodos()); ?>;
+
+  todos.forEach(todo => {
+
+    const deadline = new Date(todo.createdAt);
+
+    // Check if deadline passed and not shown yet 
+    if (deadline < now && !alertsShown[todo.content]) {
+
+      alertsShown[todo.content] = true;  // Mark as shown
+
+      alert(`Time to ${todo.content}`);
+
+    }
+  });
+
+}
+</script>
 </body>
 </html>

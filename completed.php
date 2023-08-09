@@ -88,7 +88,8 @@ function DisplayCompleted()
             $completedList .= '<td class="completed-serial">' . $counter . '.</td>';
             $completedList .= '<td class="completed-content">' . htmlspecialchars($todo['content']) . '</td>';
             $completedList .= '<td class="completed-at">';
-            $completedList .= 'Date: ' . date('d.m.Y H:i', strtotime($todo['completedAt'])) . '<br>';
+            $completedList .= 'Date: ' . date('d.m.Y', strtotime($todo['completedAt'])) . '<br>';
+            
             $completedList .= 'Time: ' . date('H:i', strtotime($todo['completedAt']));
             $completedList .= '</td>';
             $completedList .= '</tr>';

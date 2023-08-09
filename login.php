@@ -36,33 +36,7 @@ body
 	border-radius: 8px;
 	overflow: hidden;
 }
-/* .box::before 
-{
-	content: '';
-	z-index: 1;
-	position: absolute;
-	top: -50%;
-	left: -50%;
-	width: 380px;
-	height: 420px;
-	transform-origin: bottom right;
-	background: linear-gradient(0deg,transparent,#45f3ff,#45f3ff);
-	animation: animate 6s linear infinite;
-}
-.box::after 
-{
-	content: '';
-	z-index: 1;
-	position: absolute;
-	top: -50%;
-	left: -50%;
-	width: 380px;
-	height: 420px;
-	transform-origin: bottom right;
-	background: linear-gradient(0deg,transparent,#45f3ff,#45f3ff);
-	animation: animate 6s linear infinite;
-	animation-delay: -3s;
-} */
+
 @keyframes animate 
 {
 	0%
@@ -190,66 +164,57 @@ h1{
     </style>
    
 </head>
-
 <body>
-	<h1>Welcome you to To-Do List </h1>
+    <h1>Welcome you to To-Do List</h1>
     <div class="box">
-        <form autocomplete="off"  name="myform" action="index.php" method="post" id="login-form"  onsubmit="return check()"   >
+        <form autocomplete="off" name="myform" action="index.php" method="post" id="login-form" onsubmit="return check()">
             <h2>Log in</h2>
             <div class="inputBox">
-                <!-- <label for="username">Username</label> -->
                 <input type="text" name="username" id="username" required>
                 <span>Userame</span>
-				<i></i>
+                <i></i>
             </div>
             <div class="inputBox">
-                <!-- <label for="password">Password</label> -->
                 <input type="password" name="password" id="password" required>
                 <span>Password</span>
-				<i></i>
+                <i></i>
             </div>
             <div class="links">
-				<a href="#">Forgot Password ?</a>
-				<a href="#">Signup</a>
-			</div>
-           
-                <input type="submit" value="Login">
-                
-           
+                <a href="#">Forgot Password ?</a>
+                <a href="#">Signup</a>
+            </div>
+            <input type="submit" value="Login">
         </form>
     </div>
     <script>
-
-        function check(){
-            let user=document.forms["myform"]["username"].value
-            let pass=Number(document.forms["myform"]["password"].value)
-            const username=["sam","ram","raj"]
-            const password=[123,234,456]
-            t=0
-            for(let i=0;i<3;i++){
-               if(user===username[i] && pass===password[i]){
-                    t=1
-               }
-               else if(user===username[i] && pass!==password[i]){
-                    t=2
-               }
+        function check() {
+            let user = document.forms["myform"]["username"].value;
+            let pass = Number(document.forms["myform"]["password"].value);
+            const username = ["sam", "ram", "raj"];
+            const password = [123, 234, 456];
+            t = 0;
+            for (let i = 0; i < 3; i++) {
+                if (user === username[i] && pass === password[i]) {
+                    t = 1;
+                } else if (user === username[i] && pass !== password[i]) {
+                    t = 2;
+                }
             }
 
-            if(t===1){
-                alert("Success")
-                return true
-            }
-            else if(t===2)
-            {
-                alert("Incorrect Pass")
-                return false
-            }else{
-                alert("Not found")
-                return false
+            if (t === 1) {
+                setTimeout(function () {
+                    document.getElementById("login-form").submit();
+                }, 500); 
+                return false;
+            } else if (t === 2) {
+                alert("Incorrect Pass");
+                return false;
+            } else {
+                alert("Not found");
+                return false;
             }
         }
     </script>
-
 </body>
 
 </html>
